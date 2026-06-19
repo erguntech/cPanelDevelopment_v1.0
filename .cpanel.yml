@@ -10,8 +10,11 @@ deployment:
     - echo "Deploy basladi" > deploy-debug.log
     - date >> deploy-debug.log
 
+    - echo "Eski dosyalar temizleniyor..." >> deploy-debug.log
+    - /bin/find $DEPLOYPATH -mindepth 1 ! -name '.env' ! -name 'storage' ! -name 'vendor' -exec /bin/rm -rf {} + >> deploy-debug.log 2>&1
+
     - echo "Dosyalar public_html icine kopyalaniyor..." >> deploy-debug.log
-    - /bin/rsync -av --delete --exclude='.git' --exclude='.cpanel.yml' --exclude='.env' --exclude='node_modules' ./ $DEPLOYPATH >> deploy-debug.log 2>&1
+    - /bin/tar --exclude='.git' --exclude='.cpanel.yml' --exclude='.env' --exclude='node_modules' -cf - . | /bin/tar -xf - -C $DEPLOYPATH >> deploy-debug.log 2>&1
 
     - cd $DEPLOYPATH
 

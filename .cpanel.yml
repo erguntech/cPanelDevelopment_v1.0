@@ -8,5 +8,3 @@ deployment:
     - cd $APPPATH
     - echo "Deploy basladi" > deploy-debug.log
     - date >> deploy-debug.log
-
-   

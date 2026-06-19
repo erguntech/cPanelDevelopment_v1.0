@@ -35,5 +35,5 @@ deployment:
     - echo "Optimize..." >> deploy-debug.log
     - $PHP artisan optimize >> deploy-debug.log 2>&1
 
-    - echo "Deploy bitti" >> deploy-debug.log
+    - echo "Deploy b4itti" >> deploy-debug.log
     - date >> deploy-debug.log

@@ -2,36 +2,19 @@
 deployment:
   tasks:
     - export APPPATH=/home/ergun1/repositories/cPanelDevelopment_v1.0
-    - export DEPLOYPATH=/home/ergun1/public_html
-    - export PHP=/opt/cpanel/ea-php84/root/usr/bin/php
-    - export COMPOSER_HOME=/home/ergun1/.composer
-
     - cd $APPPATH
-    - echo "Deploy basladi" > deploy-debug.log
+    - echo "Composer test basladi" > deploy-debug.log
     - date >> deploy-debug.log
-
-    - echo "Eski dosyalar temizleniyor..." >> deploy-debug.log
-    - /bin/find $DEPLOYPATH -mindepth 1 ! -name '.env' ! -name 'storage' ! -name 'vendor' -exec /bin/rm -rf {} + >> deploy-debug.log 2>&1
-
-    - echo "Dosyalar public_html icine kopyalaniyor..." >> deploy-debug.log
-    - /bin/tar --exclude='.git' --exclude='.cpanel.yml' --exclude='.env' --exclude='node_modules' -cf - . | /bin/tar -xf - -C $DEPLOYPATH >> deploy-debug.log 2>&1
-
-    - cd $DEPLOYPATH
-
-    - echo "Composer install basladi..." >> deploy-debug.log
-    - if [ -x /opt/cpanel/composer/bin/composer ]; then $PHP /opt/cpanel/composer/bin/composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction >> deploy-debug.log 2>&1; else composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction >> deploy-debug.log 2>&1; fi
-
-    - echo "Optimize clear..." >> deploy-debug.log
-    - $PHP artisan optimize:clear >> deploy-debug.log 2>&1
-
-    - echo "Migrate..." >> deploy-debug.log
-    - $PHP artisan migrate --force >> deploy-debug.log 2>&1
-
-    - echo "Storage link..." >> deploy-debug.log
-    - $PHP artisan storage:link >> deploy-debug.log 2>&1 || true
-
-    - echo "Optimize..." >> deploy-debug.log
-    - $PHP artisan optimize >> deploy-debug.log 2>&1
-
-    - echo "Deploy bitti" >> deploy-debug.log
-    - date >> deploy-debug.log
+    - echo "PATH:" >> deploy-debug.log
+    - echo $PATH >> deploy-debug.log
+    - echo "which php:" >> deploy-debug.log
+    - which php >> deploy-debug.log 2>&1 || true
+    - echo "which composer:" >> deploy-debug.log
+    - which composer >> deploy-debug.log 2>&1 || true
+    - echo "ea-php84:" >> deploy-debug.log
+    - ls -la /opt/cpanel/ea-php84/root/usr/bin/php >> deploy-debug.log 2>&1 || true
+    - echo "composer locations:" >> deploy-debug.log
+    - find /opt /usr /home/ergun1 -name composer -type f 2>/dev/null >> deploy-debug.log || true
+    - echo "composer.phar locations:" >> deploy-debug.log
+    - find /opt /usr /home/ergun1 -name composer.phar -type f 2>/dev/null >> deploy-debug.log || true
+    - echo "Test bitti" >> deploy-debug.log

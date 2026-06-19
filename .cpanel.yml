@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export APPPATH=/home/ergun1/repositories/REPO_KLASOR_ADI
+    - export APPPATH=/home/ergun1/repositories/cPanelDevelopment_v1.0
     - export DEPLOYPATH=/home/ergun1/public_html
     - export PHP=/opt/cpanel/ea-php84/root/usr/bin/php
     - export COMPOSER_HOME=/home/ergun1/.composer

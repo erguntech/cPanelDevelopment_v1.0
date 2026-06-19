@@ -17,4 +17,4 @@ deployment:
     - find /opt /usr /home/ergun1 -name composer -type f 2>/dev/null >> deploy-debug.log || true
     - echo "composer.phar locations:" >> deploy-debug.log
     - find /opt /usr /home/ergun1 -name composer.phar -type f 2>/dev/null >> deploy-debug.log || true
-    - echo "Test bitti" >> deploy-debug.log
+    - echo "Test bittti" >> deploy-debug.log

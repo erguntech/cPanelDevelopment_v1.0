@@ -18,8 +18,8 @@ deployment:
     - cd $DEPLOYPATH
 
     - echo "Composer kontrol ediliyor..." >> deploy-debug.log
-    - if [ ! -f composer.phar ]; then $PHP -r "copy('https://getcomposer.org/composer-stable.phar', 'composer.phar');" >> deploy-debug.log 2>&1; fi
-
+    - if [ ! -f composer.phar ]; then /usr/bin/curl -sS https://getcomposer.org/composer-stable.phar -o composer.phar >> deploy-debug.log 2>&1 || /usr/bin/wget -q https://getcomposer.org/composer-stable.phar -O composer.phar >> deploy-debug.log 2>&1; fi
+    - ls -la composer.phar >> deploy-debug.log 2>&1
     - echo "Composer install basladi..." >> deploy-debug.log
     - $PHP composer.phar install --no-dev --prefer-dist --optimize-autoloader --no-interaction >> deploy-debug.log 2>&1
 

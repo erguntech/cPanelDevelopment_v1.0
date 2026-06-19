@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    - export APPPATH=/home/ergun1/public_html
+    - cd $APPPATH
+    - echo "cpanel.yml calisti" > cpanel-yml-test.txt
+    - date >> cpanel-yml-test.txt
+    - pwd >> cpanel-yml-test.txt

@@ -10,19 +10,19 @@ deployment:
     - date >> deploy-debug.log
 
     - echo "Eski dosyalar temizleniyor..." >> deploy-debug.log
-    - /bin/find $DEPLOYPATH -mindepth 1 ! -name '.env' ! -name 'storage' ! -name 'composer.phar' -exec /bin/rm -rf {} + >> deploy-debug.log 2>&1
+    - /bin/find $DEPLOYPATH -mindepth 1 ! -name '.env' ! -name 'storage' ! -name 'composer.phar' ! -name 'database' -exec /bin/rm -rf {} + >> deploy-debug.log 2>&1
 
     - echo "Dosyalar public_html icine kopyalaniyor..." >> deploy-debug.log
-    - /bin/tar --exclude='.git' --exclude='.cpanel.yml' --exclude='.env' --exclude='node_modules' -cf - . | /bin/tar -xf - -C $DEPLOYPATH >> deploy-debug.log 2>&1
+    - /bin/tar --exclude='.git' --exclude='.cpanel.yml' --exclude='.env' --exclude='node_modules' --exclude='database/database.sqlite' -cf - . | /bin/tar -xf - -C $DEPLOYPATH >> deploy-debug.log 2>&1
 
     - cd $DEPLOYPATH
 
+    - echo "SQLite dosyasi kontrol..." >> deploy-debug.log
     - mkdir -p database
     - if [ ! -f database/database.sqlite ]; then touch database/database.sqlite; fi
 
     - echo "Composer kontrol ediliyor..." >> deploy-debug.log
     - if [ ! -f composer.phar ]; then /usr/bin/curl -sS https://getcomposer.org/composer-stable.phar -o composer.phar >> deploy-debug.log 2>&1 || /usr/bin/wget -q https://getcomposer.org/composer-stable.phar -O composer.phar >> deploy-debug.log 2>&1; fi
-    - ls -la composer.phar >> deploy-debug.log 2>&1
 
     - echo "Composer install basladi..." >> deploy-debug.log
     - $PHP composer.phar install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-scripts >> deploy-debug.log 2>&1
@@ -30,14 +30,14 @@ deployment:
     - echo "Package discover..." >> deploy-debug.log
     - $PHP artisan package:discover --ansi >> deploy-debug.log 2>&1
 
-    - echo "Optimize clear..." >> deploy-debug.log
-    - $PHP artisan optimize:clear >> deploy-debug.log 2>&1
-
     - echo "APP_KEY kontrol..." >> deploy-debug.log
     - if [ -f .env ] && ! grep -q "^APP_KEY=base64:" .env; then $PHP artisan key:generate --force >> deploy-debug.log 2>&1; fi
 
     - echo "Migrate..." >> deploy-debug.log
     - $PHP artisan migrate --force >> deploy-debug.log 2>&1
+
+    - echo "Optimize clear..." >> deploy-debug.log
+    - $PHP artisan optimize:clear >> deploy-debug.log 2>&1 || true
 
     - echo "Storage link..." >> deploy-debug.log
     - $PHP artisan storage:link >> deploy-debug.log 2>&1 || true
@@ -45,5 +45,5 @@ deployment:
     - echo "Optimize..." >> deploy-debug.log
     - $PHP artisan optimize >> deploy-debug.log 2>&1
 
-    - echo "Deploy bitt3i" >> deploy-debug.log
+    - echo "Deploy bitti" >> deploy-debug.log
     - date >> deploy-debug.log

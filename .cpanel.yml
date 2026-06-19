@@ -9,8 +9,9 @@ deployment:
     - echo "Deploy basladi" > deploy-debug.log
     - date >> deploy-debug.log
 
-    - echo "Eski dosyalar temizleniyor..." >> deploy-debug.log
-    - /bin/find $DEPLOYPATH -mindepth 1 ! -name '.env' ! -name 'storage' ! -name 'composer.phar' ! -name 'database' -exec /bin/rm -rf {} + >> deploy-debug.log 2>&1
+    - echo "Eski Laravel dosyalari temizleniyor..." >> deploy-debug.log
+    - /bin/rm -rf $DEPLOYPATH/app $DEPLOYPATH/bootstrap $DEPLOYPATH/config $DEPLOYPATH/public $DEPLOYPATH/resources $DEPLOYPATH/routes $DEPLOYPATH/tests $DEPLOYPATH/vendor >> deploy-debug.log 2>&1 || true
+    - /bin/rm -f $DEPLOYPATH/artisan $DEPLOYPATH/composer.json $DEPLOYPATH/composer.lock $DEPLOYPATH/package.json $DEPLOYPATH/package-lock.json $DEPLOYPATH/phpunit.xml $DEPLOYPATH/vite.config.js >> deploy-debug.log 2>&1 || true
 
     - echo "Dosyalar public_html icine kopyalaniyor..." >> deploy-debug.log
     - /bin/tar --exclude='.git' --exclude='.cpanel.yml' --exclude='.env' --exclude='node_modules' --exclude='database/database.sqlite' -cf - . | /bin/tar -xf - -C $DEPLOYPATH >> deploy-debug.log 2>&1

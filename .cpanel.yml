@@ -17,6 +17,9 @@ deployment:
 
     - cd $DEPLOYPATH
 
+    - mkdir -p database
+    - if [ ! -f database/database.sqlite ]; then touch database/database.sqlite; fi
+
     - echo "Composer kontrol ediliyor..." >> deploy-debug.log
     - if [ ! -f composer.phar ]; then /usr/bin/curl -sS https://getcomposer.org/composer-stable.phar -o composer.phar >> deploy-debug.log 2>&1 || /usr/bin/wget -q https://getcomposer.org/composer-stable.phar -O composer.phar >> deploy-debug.log 2>&1; fi
     - ls -la composer.phar >> deploy-debug.log 2>&1

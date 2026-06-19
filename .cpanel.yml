@@ -1,10 +1,8 @@
 ---
 deployment:
   tasks:
-    - export APPPATH=/home/ergun1/repositories/cPanelDevelopment_v1.0
-    - export DEPLOYPATH=/home/ergun1/public_html
-    - export PHP=/opt/cpanel/ea-php84/root/usr/bin/php
-
+    - export APPPATH=/home/ergun1/public_html
     - cd $APPPATH
-    - echo "Deploy basladi" > deploy-debug.log
-    - date >> deploy-debug.log
+    - echo "cpanel.yml calisti" > cpanel-yml-test.txt
+    - date >> cpanel-yml-test.txt
+    - pwd >> cpanel-yml-test.txt

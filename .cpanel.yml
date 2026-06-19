@@ -2,7 +2,24 @@
 deployment:
   tasks:
     - export APPPATH=/home/ergun1/public_html
+    - export PHP=/opt/cpanel/ea-php84/root/usr/bin/php
+    - export COMPOSER_HOME=/home/ergun1/.composer
     - cd $APPPATH
-    - echo "cpanel.yml calisti" > cpanel-yml-test.txt
-    - date >> cpanel-yml-test.txt
-    - pwd >> cpanel-yml-test.txt
+
+    # Composer paketlerini kur
+    - if [ -x /opt/cpanel/composer/bin/composer ]; then $PHP /opt/cpanel/composer/bin/composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction; else composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction; fi
+
+    # Eski Laravel cache temizle
+    - $PHP artisan optimize:clear
+
+    # APP_KEY yoksa sadece ilk kurulumda üret
+    - if [ -f .env ] && ! grep -q "^APP_KEY=base64:" .env; then $PHP artisan key:generate --force; fi
+
+    # Veritabanı migration çalıştır
+    - $PHP artisan migrate --force
+
+    # Storage link oluştur
+    - $PHP artisan storage:link || true
+
+    # Production cache oluştur
+    - $PHP artisan optimize
